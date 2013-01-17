@@ -5,10 +5,10 @@
 __author__ = "Scott Garner"
 __email__ = "scott@j38.net"
 
-import pygame
-
 import RPi.GPIO as GPIO
 import mpr121
+
+import os
 
 # Use GPIO Interrupt Pin
 
@@ -21,23 +21,7 @@ mpr121.TOU_THRESH = 0x30
 mpr121.REL_THRESH = 0x33
 mpr121.setup(0x5a)
 
-# User pygame for sounds
-
-pygame.mixer.pre_init(44100, -16, 12, 512)
-pygame.init()
-
-kick = pygame.mixer.Sound('samples/kick.wav')
-kick.set_volume(.65);
-snare = pygame.mixer.Sound('samples/snare.wav')
-snare.set_volume(.65);
-openhh = pygame.mixer.Sound('samples/open.wav')
-openhh.set_volume(.65);
-closedhh = pygame.mixer.Sound('samples/closed.wav')
-closedhh.set_volume(.65);
-clap = pygame.mixer.Sound('samples/clap.wav')
-clap.set_volume(.65);
-cymbal = pygame.mixer.Sound('samples/cymbal.wav')
-cymbal.set_volume(.65);
+sound = ['samples/kick.wav', 'samples/snare.wav', 'samples/open.wav', 'samples/closed.wav', 'samples/clap.wav', 'samples/cymbal.wav']
 
 # Track touches
 
@@ -58,18 +42,7 @@ while True:
 
 					print( 'Pin ' + str(i) + ' was just touched')
 
-					if (i == 0):
-						kick.play()
-					elif (i == 1):
-						snare.play()
-					elif (i == 2):
-						openhh.play()
-					elif (i == 3):
-						closedhh.play()
-					elif (i == 4):
-						clap.play()
-					elif (i == 5):
-						cymbal.play()
+					os.system('omxplayer ' + sound[i] + ' > /dev/null')
 
 				touches[i] = 1;
 			else:
